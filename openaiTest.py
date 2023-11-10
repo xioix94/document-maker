@@ -1,26 +1,29 @@
+# -*- coding: utf-8 -*
 import requests
 
-url = "https://api.openai.com/v1/chat/completions"
-api_key = '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'
+class OpenaiRequest():
+  def openaiRequst(self, content):
+    url = "https://api.openai.com/v1/chat/completions"
+    api_key = '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'
 
-headers = {
-    "Authorization": f"Bearer {api_key}",
-    "Content-Type": "application/json"
-}
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
 
-data = {
-    "messages": [
-        {"role": "system", "content": "You are a helpful assistant. and you specialize in make Draft of a Document about business in korean."},
-        {"role": "user", "content": "I want to make a document about 'how to make a business plan'"}
-    ],
-    "model": "gpt-3.5-turbo",
-}
+    data = {
+        "messages": [
+            {"role": "system", "content": "You are a helpful assistant. and you specialize in make Document about business in korean based on given content. document consist of index and each chapter's content. each content is long 500+ word. document condition do not contain in document directe. no skip response"},
+            {"role": "user", "content": content}
+        ],
+        "model": "gpt-4-1106-preview",
+    }
 
-response = requests.post(url, headers=headers, json=data)
+    response = requests.post(url, headers=headers, json=data)
 
-if response.status_code == 200:
-    result = response.json()
-    message = result["choices"][0]["message"]["content"]
-    print("Assistant:", message)
-else:
-    print("Error:", response.status_code, response.text)
+    if response.status_code == 200:
+        result = response.json()
+        message = result["choices"][0]["message"]["content"]
+        return "Assistant:" + message
+    else:
+        print("Error:", response.status_code, response.text)
