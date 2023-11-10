@@ -2,8 +2,13 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from openaiTest import OpenaiRequest
+from module import Mydocuments
 
 class Ui_Dialog(object):
+    def __init__(self):
+        self.doc = Mydocuments()
+        self.doc.get_documents()
+    
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(620, 1253)
@@ -19,19 +24,22 @@ class Ui_Dialog(object):
         self.pushButton = QtWidgets.QPushButton(Dialog)
         self.pushButton.setGeometry(QtCore.QRect(270, 150, 75, 23))
         self.pushButton.setObjectName("pushButton")
+        #self.pushButton.clicked.connect(self.on_search_document_clicked)
         self.textBrowser = QtWidgets.QTextBrowser(Dialog)
         self.textBrowser.setGeometry(QtCore.QRect(40, 720, 541, 471))
         self.textBrowser.setObjectName("textBrowser")
         self.pushButton_2 = QtWidgets.QPushButton(Dialog)
         self.pushButton_2.setGeometry(QtCore.QRect(250, 670, 111, 23))
         self.pushButton_2.setObjectName("pushButton_2")
-        # self.pushButton_2.clicked.connect(OpenaiRequest.openaiRequst(self, self.textEdit.toPlainText()))
+        #self.pushButton_2.clicked.connect(OpenaiRequest.openaiRequst(self, self.textEdit.toPlainText()))
         self.pushButton_2.clicked.connect(self.on_create_document_clicked)
 
         self.tableWidget = QtWidgets.QTableWidget(Dialog)
         self.tableWidget.setGeometry(QtCore.QRect(40, 200, 541, 192))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(2)
+        self.tableWidget.setColumnWidth(0, 130)
+        self.tableWidget.setColumnWidth(1, 360)
         self.tableWidget.setRowCount(500)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
@@ -39,10 +47,10 @@ class Ui_Dialog(object):
         self.tableWidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setItem(0, 0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setItem(0, 1, item)
+        #item = QtWidgets.QTableWidgetItem()
+        #self.tableWidget.setItem(0, 0, item)
+        #item = QtWidgets.QTableWidgetItem()
+        #self.tableWidget.setItem(0, 1, item)
         self.textEdit_2 = QtWidgets.QTextEdit(Dialog)
         self.textEdit_2.setGeometry(QtCore.QRect(40, 90, 541, 41))
         self.textEdit_2.setObjectName("textEdit_2")
@@ -52,10 +60,48 @@ class Ui_Dialog(object):
         self.label_4 = QtWidgets.QLabel(Dialog)
         self.label_4.setGeometry(QtCore.QRect(40, 20, 471, 31))
         self.label_4.setObjectName("label_4")
-
+        self.pushButton.clicked.connect(self.on_search_document_clicked)
+        
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
+    def clear_tableWidget(self):
+        _translate = QtCore.QCoreApplication.translate
+        
+        for i in range(501):
+            item = QtWidgets.QTableWidgetItem()
+            item.setText(_translate("Dialog", ""))
+            self.tableWidget.setItem(i, 0, item)
+            
+            item = QtWidgets.QTableWidgetItem()
+            item.setText(_translate("Dialog", ""))
+            self.tableWidget.setItem(i, 1, item)
+    
+    def on_search_document_clicked(self):
+        self.clear_tableWidget()
+        content = self.textEdit_2.toPlainText()
+        
+        if content == "":
+            print("내용을 입력하세요.")
+        else:
+            self.doc.search_documents([content]) # 다중 키워드 or 검색 방식 변경 시 수정해야함
+                        
+            i = 0
+            _translate = QtCore.QCoreApplication.translate
+            
+            for path in self.doc.get_search_cache():
+                item = QtWidgets.QTableWidgetItem()
+                item.setText(_translate("Dialog", path))
+                self.tableWidget.setItem(i, 1, item)
+                
+                item = QtWidgets.QTableWidgetItem()
+                item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+                item.setCheckState(QtCore.Qt.Checked)
+                item.setText(path.split('\\')[-1])
+                self.tableWidget.setItem(i, 0, item)
+                
+                i += 1
+            
     def on_create_document_clicked(self):
         content = self.textEdit.toPlainText()
         
@@ -80,10 +126,6 @@ class Ui_Dialog(object):
         item.setText(_translate("Dialog", "파일 경로"))
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
-        item = self.tableWidget.item(0, 0)
-        item.setText(_translate("Dialog", "test"))
-        item = self.tableWidget.item(0, 1)
-        item.setText(_translate("Dialog", "C:/user/home/자동차 판매"))
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.label_3.setText(_translate("Dialog", "예시) 자동차"))
         self.label_4.setText(_translate("Dialog", "아래 작성하려는 문서의 주제를 단어로 입력하세요."))
