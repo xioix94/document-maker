@@ -2,12 +2,13 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from openaiTest import OpenaiRequest
-from module import Mydocuments
+from module import Mydocuments, print_docx, print_hwp, print_pdf
 
 class Ui_Dialog(object):
     def __init__(self):
         self.doc = Mydocuments()
         self.doc.get_documents()
+        self.rowCnt = 0
     
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -76,6 +77,8 @@ class Ui_Dialog(object):
             item = QtWidgets.QTableWidgetItem()
             item.setText(_translate("Dialog", ""))
             self.tableWidget.setItem(i, 1, item)
+        
+        self.rowCnt = 0
     
     def on_search_document_clicked(self):
         self.clear_tableWidget()
@@ -102,13 +105,29 @@ class Ui_Dialog(object):
                 
                 i += 1
             
+            self.rowCnt = i - 1
+            
     def on_create_document_clicked(self):
         content = self.textEdit.toPlainText()
         
         if content == "":
             print("내용을 입력하세요.")
         else:
-            result = OpenaiRequest.openaiRequst(self, content)
+            fulltext = ''
+            for i in range(self.rowCnt + 1):
+                item = self.tableWidget.item(i, 0)
+                if item is not None and item.checkState() == QtCore.Qt.Checked:
+                    text = item.text()
+                    path = self.tableWidget.item(i, 1).text()
+                    
+                    if text.endswith(".pdf"):
+                        fulltext += print_pdf(path) + '\n'
+                    elif text.endswith(".docx"):
+                        fulltext += print_docx(path) + '\n'
+                    elif text.endswith(".hwp"):
+                        fulltext += print_hwp(path) + '\n'
+                        
+            result = OpenaiRequest.openaiRequst(self, fulltext + '\n' + content)
             self.textBrowser.setPlainText(result) 
 
     def retranslateUi(self, Dialog):

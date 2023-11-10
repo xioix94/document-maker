@@ -1,8 +1,7 @@
 import os
 import docx #pip install python-docx
-import asyncio
 from subprocess import Popen, PIPE
-from pdfminer.high_level import extract_text #pip install pdfminer
+from PyPDF2 import PdfReader
 
 class Mydocuments:
     def __init__(self):
@@ -42,36 +41,31 @@ class Mydocuments:
         
         self.search_cache = list(set(result))
 
-    def print_docx(self, path):
-        fullText = []
-        doc = docx.Document(path)
-        
-        for para in doc.paragraphs:
-            if para.text:
-                fullText.append(para.text)
-        
-        return " ".join(fullText).replace('\n', ' ').replace('"', '\'')
-        #for text in fullText:
-        #   print(text)
-           
-    def print_pdf(self, path):
-        from PyPDF2 import PdfReader
-        reader = PdfReader(path)
-        pages = reader.pages
-        text = ""
-        for page in pages:
-            sub = page.extract_text()
-            text += sub
-
-        return (text.replace('\n', ' ').replace('"', '\''))
-
-    def print_hwp(self, path):
-        process = Popen(['hwp5txt', path], stdout=PIPE, stderr=PIPE)
-        stdout, stderr = process.communicate()
-        data = stdout.decode('utf-8')
-        
-        return data.replace('\n', ' ').replace('"', '\'')
+def print_docx(path):
+    fullText = []
+    doc = docx.Document(path)
     
-doc = Mydocuments()
-with open('test.txt', 'w', encoding='utf-8') as f:
-    f.write(doc.print_docx('C:\\Users\\norma_rna10\\Downloads\\노르마_IoT Care_기술적 차별성_231107.docx'))
+    for para in doc.paragraphs:
+        if para.text:
+            fullText.append(para.text)
+    
+    return " ".join(fullText).replace('\n', ' ').replace('"', '\'')
+    #for text in fullText:
+    #   print(text)
+        
+def print_pdf(path):
+    reader = PdfReader(path)
+    pages = reader.pages
+    text = ""
+    for page in pages:
+        sub = page.extract_text()
+        text += sub
+
+    return (text.replace('\n', ' ').replace('"', '\''))
+
+def print_hwp(path):
+    process = Popen(['hwp5txt', path], stdout=PIPE, stderr=PIPE)
+    stdout, stderr = process.communicate()
+    data = stdout.decode('utf-8')
+    
+    return data.replace('\n', ' ').replace('"', '\'')
