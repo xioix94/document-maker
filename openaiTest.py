@@ -2,9 +2,9 @@
 import requests
 
 class OpenaiRequest():
-  def openaiRequst(self, content):
+  def openaiRequst(self, token, content):
     url = "https://api.openai.com/v1/chat/completions"
-    api_key = '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'
+    api_key = token
 
     headers = {
         "Authorization": f"Bearer {api_key}",

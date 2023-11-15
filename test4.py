@@ -9,29 +9,39 @@ class Ui_Dialog(object):
         self.doc = Mydocuments()
         self.doc.get_documents()
         self.rowCnt = 0
+        self.token = None
     
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(620, 1253)
         self.label = QtWidgets.QLabel(Dialog)
-        self.label.setGeometry(QtCore.QRect(40, 420, 471, 31))
+        self.label.setGeometry(QtCore.QRect(40, 510, 471, 31))
         self.label.setObjectName("label")
         self.textEdit = QtWidgets.QTextEdit(Dialog)
-        self.textEdit.setGeometry(QtCore.QRect(40, 470, 541, 181))
+        self.textEdit.setGeometry(QtCore.QRect(40, 570, 541, 71))
         self.textEdit.setObjectName("textEdit")
         self.label_2 = QtWidgets.QLabel(Dialog)
-        self.label_2.setGeometry(QtCore.QRect(40, 450, 401, 16))
+        self.label_2.setGeometry(QtCore.QRect(40, 540, 401, 16))
         self.label_2.setObjectName("label_2")
         self.pushButton = QtWidgets.QPushButton(Dialog)
         self.pushButton.setGeometry(QtCore.QRect(270, 150, 75, 23))
         self.pushButton.setObjectName("pushButton")
         #self.pushButton.clicked.connect(self.on_search_document_clicked)
         self.textBrowser = QtWidgets.QTextBrowser(Dialog)
-        self.textBrowser.setGeometry(QtCore.QRect(40, 720, 541, 471))
+        self.textBrowser.setGeometry(QtCore.QRect(40, 710, 541, 471))
         self.textBrowser.setObjectName("textBrowser")
         self.pushButton_2 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_2.setGeometry(QtCore.QRect(250, 670, 111, 23))
+        self.pushButton_2.setGeometry(QtCore.QRect(250, 660, 111, 23))
         self.pushButton_2.setObjectName("pushButton_2")
+        self.label_5 = QtWidgets.QLabel(Dialog)
+        self.label_5.setGeometry(QtCore.QRect(40, 420, 438, 30))
+        self.label_5.setObjectName("label_3")
+        self.textEdit_3 = QtWidgets.QTextEdit(Dialog)
+        self.textEdit_3.setGeometry(QtCore.QRect(40, 450, 438, 30))
+        self.textEdit_3.setObjectName("textEdit_3")
+        self.pushButton_3 = QtWidgets.QPushButton(Dialog)
+        self.pushButton_3.setGeometry(QtCore.QRect(490, 450, 90, 30))
+        self.pushButton_3.setObjectName("pushButton_3")
         #self.pushButton_2.clicked.connect(OpenaiRequest.openaiRequst(self, self.textEdit.toPlainText()))
         self.pushButton_2.clicked.connect(self.on_create_document_clicked)
 
@@ -62,6 +72,7 @@ class Ui_Dialog(object):
         self.label_4.setGeometry(QtCore.QRect(40, 20, 471, 31))
         self.label_4.setObjectName("label_4")
         self.pushButton.clicked.connect(self.on_search_document_clicked)
+        self.pushButton_3.clicked.connect(self.on_save_token_clicked)
         
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -79,6 +90,10 @@ class Ui_Dialog(object):
             self.tableWidget.setItem(i, 1, item)
         
         self.rowCnt = 0
+        
+    def on_save_token_clicked(self):
+        token = self.textEdit_3.toPlainText()
+        self.token = token
     
     def on_search_document_clicked(self):
         self.clear_tableWidget()
@@ -127,7 +142,7 @@ class Ui_Dialog(object):
                     elif text.endswith(".hwp"):
                         fulltext += print_hwp(path) + '\n'
                         
-            result = OpenaiRequest.openaiRequst(self, fulltext + '\n' + content)
+            result = OpenaiRequest.openaiRequst(self, self.token, fulltext + '\n' + content)
             self.textBrowser.setPlainText(result) 
 
     def retranslateUi(self, Dialog):
@@ -137,6 +152,7 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "예시) 자동차 판매 보고서 만들어 줘"))
         self.pushButton.setText(_translate("Dialog", "File Search"))
         self.pushButton_2.setText(_translate("Dialog", "Create Document"))
+        self.pushButton_3.setText(_translate("Dialog", "Save"))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("Dialog", "1"))
         item = self.tableWidget.horizontalHeaderItem(0)
@@ -148,6 +164,7 @@ class Ui_Dialog(object):
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.label_3.setText(_translate("Dialog", "예시) 자동차"))
         self.label_4.setText(_translate("Dialog", "아래 작성하려는 문서의 주제를 단어로 입력하세요."))
+        self.label_5.setText(_translate("Dialog", "Open Ai API Token"))
 
 
 if __name__ == "__main__":
