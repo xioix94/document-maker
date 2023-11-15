@@ -13,7 +13,7 @@ class Ui_Dialog(object):
     
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(620, 1253)
+        Dialog.resize(620, 953)
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(40, 510, 471, 31))
         self.label.setObjectName("label")
@@ -28,7 +28,7 @@ class Ui_Dialog(object):
         self.pushButton.setObjectName("pushButton")
         #self.pushButton.clicked.connect(self.on_search_document_clicked)
         self.textBrowser = QtWidgets.QTextBrowser(Dialog)
-        self.textBrowser.setGeometry(QtCore.QRect(40, 710, 541, 471))
+        self.textBrowser.setGeometry(QtCore.QRect(40, 710, 541, 221))
         self.textBrowser.setObjectName("textBrowser")
         self.pushButton_2 = QtWidgets.QPushButton(Dialog)
         self.pushButton_2.setGeometry(QtCore.QRect(250, 660, 111, 23))
