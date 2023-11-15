@@ -1,5 +1,5 @@
 import os
-import docx #pip install python-docx
+import docx
 from subprocess import Popen, PIPE
 from PyPDF2 import PdfReader
 
@@ -50,8 +50,6 @@ def print_docx(path):
             fullText.append(para.text)
     
     return " ".join(fullText).replace('\n', ' ').replace('"', '\'')
-    #for text in fullText:
-    #   print(text)
         
 def print_pdf(path):
     reader = PdfReader(path)

@@ -26,7 +26,6 @@ class Ui_Dialog(object):
         self.pushButton = QtWidgets.QPushButton(Dialog)
         self.pushButton.setGeometry(QtCore.QRect(270, 150, 75, 23))
         self.pushButton.setObjectName("pushButton")
-        #self.pushButton.clicked.connect(self.on_search_document_clicked)
         self.textBrowser = QtWidgets.QTextBrowser(Dialog)
         self.textBrowser.setGeometry(QtCore.QRect(40, 710, 541, 221))
         self.textBrowser.setObjectName("textBrowser")
@@ -42,7 +41,6 @@ class Ui_Dialog(object):
         self.pushButton_3 = QtWidgets.QPushButton(Dialog)
         self.pushButton_3.setGeometry(QtCore.QRect(490, 450, 90, 30))
         self.pushButton_3.setObjectName("pushButton_3")
-        #self.pushButton_2.clicked.connect(OpenaiRequest.openaiRequst(self, self.textEdit.toPlainText()))
         self.pushButton_2.clicked.connect(self.on_create_document_clicked)
 
         self.tableWidget = QtWidgets.QTableWidget(Dialog)
@@ -58,10 +56,6 @@ class Ui_Dialog(object):
         self.tableWidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, item)
-        #item = QtWidgets.QTableWidgetItem()
-        #self.tableWidget.setItem(0, 0, item)
-        #item = QtWidgets.QTableWidgetItem()
-        #self.tableWidget.setItem(0, 1, item)
         self.textEdit_2 = QtWidgets.QTextEdit(Dialog)
         self.textEdit_2.setGeometry(QtCore.QRect(40, 90, 541, 41))
         self.textEdit_2.setObjectName("textEdit_2")
@@ -102,7 +96,7 @@ class Ui_Dialog(object):
         if content == "":
             print("내용을 입력하세요.")
         else:
-            self.doc.search_documents([content]) # 다중 키워드 or 검색 방식 변경 시 수정해야함
+            self.doc.search_documents([content])
                         
             i = 0
             _translate = QtCore.QCoreApplication.translate
