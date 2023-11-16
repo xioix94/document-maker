@@ -14,7 +14,7 @@
 pip install python-docx PyPDF2
 pip install PyQt5
 
-![image (3)](https://github.com/xioix94/document-maker/assets/53420414/4ccaaf80-c944-4e96-b238-179c7b78afa6)
+![image (3)](https://github.com/xioix94/document-maker/assets/53420414/175f96d6-5326-4d2e-9c2d-fc8ab3cc1425)
 
 # 사용법
 # 1. openai 토큰 발급
